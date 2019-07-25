@@ -107,52 +107,53 @@ pub fn init() {
 
 #[cfg(not(ossl110))]
 pub fn init() {
-    use std::io::{self, Write};
-    use std::mem;
-    use std::process;
-    use std::sync::{SgxMutex, SgxMutexGuard, Once, ONCE_INIT};
-
-    static mut MUTEXES: *mut Vec<SgxMutex<()>> = 0 as *mut Vec<SgxMutex<()>>;
-    static mut GUARDS: *mut Vec<Option<SgxMutexGuard<'static, ()>>> =
-        0 as *mut Vec<Option<SgxMutexGuard<'static, ()>>>;
-
-    unsafe extern "C" fn locking_function(
-        mode: c_int,
-        n: c_int,
-        _file: *const c_char,
-        _line: c_int,
-    ) {
-        let mutex = &(*MUTEXES)[n as usize];
-
-        if mode & ::CRYPTO_LOCK != 0 {
-            (*GUARDS)[n as usize] = Some(mutex.lock().unwrap());
-        } else {
-            if let None = (*GUARDS)[n as usize].take() {
-                let _ = writeln!(
-                    io::stderr(),
-                    "BUG: rust-openssl lock {} already unlocked, aborting",
-                    n
-                );
-                process::abort();
-            }
-        }
-    }
-
-    cfg_if! {
-        if #[cfg(unix)] {
-            fn set_id_callback() {
-                unsafe extern "C" fn thread_id() -> c_ulong {
-                    sgx_trts::libc::pthread_self() as c_ulong
-                }
-
-                unsafe {
-                    CRYPTO_set_id_callback(thread_id);
-                }
-            }
-        } else {
-            fn set_id_callback() {}
-        }
-    }
+//     use std::io::{self, Write};
+//     use std::mem;
+//     use std::process;
+//     use std::sync::{SgxMutex, SgxMutexGuard, Once, ONCE_INIT};
+    use std::sync::{Once, ONCE_INIT};
+//
+//     static mut MUTEXES: *mut Vec<SgxMutex<()>> = 0 as *mut Vec<SgxMutex<()>>;
+//     static mut GUARDS: *mut Vec<Option<SgxMutexGuard<'static, ()>>> =
+//         0 as *mut Vec<Option<SgxMutexGuard<'static, ()>>>;
+//
+//     unsafe extern "C" fn locking_function(
+//         mode: c_int,
+//         n: c_int,
+//         _file: *const c_char,
+//         _line: c_int,
+//     ) {
+//         let mutex = &(*MUTEXES)[n as usize];
+//
+//         if mode & ::CRYPTO_LOCK != 0 {
+//             (*GUARDS)[n as usize] = Some(mutex.lock().unwrap());
+//         } else {
+//             if let None = (*GUARDS)[n as usize].take() {
+//                 let _ = writeln!(
+//                     io::stderr(),
+//                     "BUG: rust-openssl lock {} already unlocked, aborting",
+//                     n
+//                 );
+//                 process::abort();
+//             }
+//         }
+//     }
+//
+//     cfg_if! {
+//         if #[cfg(unix)] {
+//             fn set_id_callback() {
+//                 unsafe extern "C" fn thread_id() -> c_ulong {
+//                     sgx_trts::pthread_self() as c_ulong
+//                 }
+//
+//                 unsafe {
+//                     CRYPTO_set_id_callback(thread_id);
+//                 }
+//             }
+//         } else {
+//             fn set_id_callback() {}
+//         }
+//     }
 
     static INIT: Once = ONCE_INIT;
 
@@ -161,17 +162,17 @@ pub fn init() {
         SSL_load_error_strings();
         OPENSSL_add_all_algorithms_noconf();
 
-        let num_locks = ::CRYPTO_num_locks();
-        let mut mutexes = Box::new(Vec::new());
-        for _ in 0..num_locks {
-            mutexes.push(SgxMutex::new(()));
-        }
-        MUTEXES = mem::transmute(mutexes);
-        let guards: Box<Vec<Option<SgxMutexGuard<()>>>> =
-            Box::new((0..num_locks).map(|_| None).collect());
-        GUARDS = mem::transmute(guards);
-
-        CRYPTO_set_locking_callback(locking_function);
-        set_id_callback();
+//         let num_locks = ::CRYPTO_num_locks();
+//         let mut mutexes = Box::new(Vec::new());
+//         for _ in 0..num_locks {
+//             mutexes.push(SgxMutex::new(()));
+//         }
+//         MUTEXES = mem::transmute(mutexes);
+//         let guards: Box<Vec<Option<SgxMutexGuard<()>>>> =
+//             Box::new((0..num_locks).map(|_| None).collect());
+//         GUARDS = mem::transmute(guards);
+//
+//         CRYPTO_set_locking_callback(locking_function);
+//         set_id_callback();
     })
 }
