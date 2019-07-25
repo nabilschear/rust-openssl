@@ -20,7 +20,7 @@ impl<'a> Drop for MemBioSlice<'a> {
 
 impl<'a> MemBioSlice<'a> {
     pub fn new(buf: &'a [u8]) -> Result<MemBioSlice<'a>, ErrorStack> {
-        //ffi::init();
+        ffi::init();
 
         assert!(buf.len() <= c_int::max_value() as usize);
         let bio = unsafe {
@@ -50,7 +50,7 @@ impl Drop for MemBio {
 
 impl MemBio {
     pub fn new() -> Result<MemBio, ErrorStack> {
-        //ffi::init();
+        ffi::init();
 
         let bio = unsafe { cvt_p(ffi::BIO_new(ffi::BIO_s_mem()))? };
         Ok(MemBio(bio))

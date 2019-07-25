@@ -385,7 +385,7 @@ impl Crypter {
         key: &[u8],
         iv: Option<&[u8]>,
     ) -> Result<Crypter, ErrorStack> {
-        //ffi::init();
+        ffi::init();
 
         unsafe {
             let ctx = cvt_p(ffi::EVP_CIPHER_CTX_new())?;

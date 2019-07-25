@@ -248,7 +248,7 @@ impl OcspResponse {
         body: Option<&OcspBasicResponseRef>,
     ) -> Result<OcspResponse, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
 
             cvt_p(ffi::OCSP_response_create(
                 status.as_raw(),
@@ -305,7 +305,7 @@ foreign_type_and_impl_send_sync! {
 impl OcspRequest {
     pub fn new() -> Result<OcspRequest, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
 
             cvt_p(ffi::OCSP_REQUEST_new()).map(OcspRequest)
         }

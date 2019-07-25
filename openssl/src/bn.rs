@@ -108,7 +108,7 @@ impl BigNumContext {
     /// [`BN_CTX_new`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_CTX_new.html
     pub fn new() -> Result<BigNumContext, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(ffi::BN_CTX_new()).map(BigNumContext)
         }
     }
@@ -921,7 +921,7 @@ impl BigNum {
     /// Creates a new `BigNum` with the value 0.
     pub fn new() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let v = cvt_p(ffi::BN_new())?;
             Ok(BigNum::from_ptr(v))
         }
@@ -945,7 +945,7 @@ impl BigNum {
     /// [`BN_dec2bn`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_dec2bn.html
     pub fn from_dec_str(s: &str) -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let c_str = CString::new(s.as_bytes()).unwrap();
             let mut bn = ptr::null_mut();
             cvt(ffi::BN_dec2bn(&mut bn, c_str.as_ptr() as *const _))?;
@@ -960,7 +960,7 @@ impl BigNum {
     /// [`BN_hex2bn`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_hex2bn.html
     pub fn from_hex_str(s: &str) -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let c_str = CString::new(s.as_bytes()).unwrap();
             let mut bn = ptr::null_mut();
             cvt(ffi::BN_hex2bn(&mut bn, c_str.as_ptr() as *const _))?;
@@ -978,7 +978,7 @@ impl BigNum {
     /// [`BN_get_rfc2409_prime_768`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc2409_prime_768.html
     pub fn get_rfc2409_prime_768() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc2409_prime_768(ptr::null_mut())).map(BigNum)
         }
     }
@@ -993,7 +993,7 @@ impl BigNum {
     /// [`BN_get_rfc2409_prime_1024`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc2409_prime_1024.html
     pub fn get_rfc2409_prime_1024() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc2409_prime_1024(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1008,7 +1008,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_1536`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_1536.html
     pub fn get_rfc3526_prime_1536() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_1536(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1023,7 +1023,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_2048`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_2048.html
     pub fn get_rfc3526_prime_2048() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_2048(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1038,7 +1038,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_3072`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_3072.html
     pub fn get_rfc3526_prime_3072() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_3072(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1053,7 +1053,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_4096`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_4096.html
     pub fn get_rfc3526_prime_4096() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_4096(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1068,7 +1068,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_6144`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_6144.html
     pub fn get_rfc3526_prime_6144() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_6144(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1083,7 +1083,7 @@ impl BigNum {
     /// [`BN_get_rfc3526_prime_8192`]: https://www.openssl.org/docs/man1.1.0/crypto/BN_get_rfc3526_prime_8192.html
     pub fn get_rfc3526_prime_8192() -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             cvt_p(BN_get_rfc3526_prime_8192(ptr::null_mut())).map(BigNum)
         }
     }
@@ -1102,7 +1102,7 @@ impl BigNum {
     /// ```
     pub fn from_slice(n: &[u8]) -> Result<BigNum, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             assert!(n.len() <= c_int::max_value() as usize);
             cvt_p(ffi::BN_bin2bn(
                 n.as_ptr(),

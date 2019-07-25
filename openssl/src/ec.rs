@@ -42,7 +42,7 @@ use bn::{BigNumContextRef, BigNumRef};
 use error::ErrorStack;
 use nid::Nid;
 use pkey::{HasParams, HasPrivate, HasPublic, Params, Private, Public};
-use {cvt, cvt_n, cvt_p};
+use {cvt, cvt_n, cvt_p, init};
 
 /// Compressed or Uncompressed conversion
 ///
@@ -138,7 +138,7 @@ impl EcGroup {
     /// [`EC_GROUP_new`]: https://www.openssl.org/docs/man1.1.0/crypto/EC_GROUP_new.html
     pub fn from_curve_name(nid: Nid) -> Result<EcGroup, ErrorStack> {
         unsafe {
-            //init();
+            init();
             cvt_p(ffi::EC_GROUP_new_by_curve_name(nid.as_raw())).map(EcGroup)
         }
     }
@@ -699,7 +699,7 @@ impl EcKey<Params> {
     /// [`EC_KEY_new_by_curve_name`]: https://www.openssl.org/docs/man1.1.0/crypto/EC_KEY_new_by_curve_name.html
     pub fn from_curve_name(nid: Nid) -> Result<EcKey<Params>, ErrorStack> {
         unsafe {
-            //init();
+            init();
             cvt_p(ffi::EC_KEY_new_by_curve_name(nid.as_raw())).map(|p| EcKey::from_ptr(p))
         }
     }

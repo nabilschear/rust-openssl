@@ -67,7 +67,7 @@ impl X509StoreContext {
     /// [`X509_STORE_CTX_new`]: https://www.openssl.org/docs/man1.1.0/crypto/X509_STORE_CTX_new.html
     pub fn new() -> Result<X509StoreContext, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
             cvt_p(ffi::X509_STORE_CTX_new()).map(|p| X509StoreContext(p))
         }
     }
@@ -226,7 +226,7 @@ impl X509Builder {
     /// Creates a new builder.
     pub fn new() -> Result<X509Builder, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
             cvt_p(ffi::X509_new()).map(|p| X509Builder(X509(p)))
         }
     }
@@ -628,7 +628,7 @@ impl X509 {
     /// Deserializes a list of PEM-formatted certificates.
     pub fn stack_from_pem(pem: &[u8]) -> Result<Vec<X509>, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
             let bio = MemBioSlice::new(pem)?;
 
             let mut certs = vec![];
@@ -711,7 +711,7 @@ impl X509Extension {
         let name = CString::new(name).unwrap();
         let value = CString::new(value).unwrap();
         unsafe {
-            ////ffi::init();
+            ffi::init();
             let conf = conf.map_or(ptr::null_mut(), ConfRef::as_ptr);
             let context = context.map_or(ptr::null_mut(), X509v3Context::as_ptr);
             let name = name.as_ptr() as *mut _;
@@ -736,7 +736,7 @@ impl X509Extension {
     ) -> Result<X509Extension, ErrorStack> {
         let value = CString::new(value).unwrap();
         unsafe {
-            ////ffi::init();
+            ffi::init();
             let conf = conf.map_or(ptr::null_mut(), ConfRef::as_ptr);
             let context = context.map_or(ptr::null_mut(), X509v3Context::as_ptr);
             let name = name.as_raw();
@@ -754,7 +754,7 @@ impl X509NameBuilder {
     /// Creates a new builder.
     pub fn new() -> Result<X509NameBuilder, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
             cvt_p(ffi::X509_NAME_new()).map(|p| X509NameBuilder(X509Name(p)))
         }
     }
@@ -943,7 +943,7 @@ impl X509ReqBuilder {
     ///[`X509_REQ_new`]: https://www.openssl.org/docs/man1.1.0/crypto/X509_REQ_new.html
     pub fn new() -> Result<X509ReqBuilder, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
             cvt_p(ffi::X509_REQ_new()).map(|p| X509ReqBuilder(X509Req(p)))
         }
     }
@@ -1217,7 +1217,7 @@ impl X509VerifyResult {
     ///
     /// [`X509_verify_cert_error_string`]: https://www.openssl.org/docs/man1.1.0/crypto/X509_verify_cert_error_string.html
     pub fn error_string(&self) -> &'static str {
-        ////ffi::init();
+        ffi::init();
 
         unsafe {
             let s = ffi::X509_verify_cert_error_string(self.0 as c_long);

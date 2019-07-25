@@ -64,7 +64,7 @@ impl X509StoreBuilder {
     /// The store is initially empty.
     pub fn new() -> Result<X509StoreBuilder, ErrorStack> {
         unsafe {
-            ////ffi::init();
+            ffi::init();
 
             cvt_p(ffi::X509_STORE_new()).map(X509StoreBuilder)
         }

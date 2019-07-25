@@ -158,7 +158,7 @@ impl<'a> Signer<'a> {
         T: HasPrivate,
     {
         unsafe {
-            ////ffi::init();
+            //ffi::init();
 
             let ctx = cvt_p(EVP_MD_CTX_new())?;
             let mut pctx: *mut ffi::EVP_PKEY_CTX = ptr::null_mut();
@@ -357,7 +357,7 @@ impl<'a> Verifier<'a> {
         T: HasPublic,
     {
         unsafe {
-            ////ffi::init();
+            //ffi::init();
 
             let ctx = cvt_p(EVP_MD_CTX_new())?;
             let mut pctx: *mut ffi::EVP_PKEY_CTX = ptr::null_mut();

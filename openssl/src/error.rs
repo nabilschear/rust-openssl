@@ -110,7 +110,7 @@ impl Error {
     /// Returns the first error on the OpenSSL error stack.
     pub fn get() -> Option<Error> {
         unsafe {
-            //ffi::init();
+            ffi::init();
 
             let mut file = ptr::null();
             let mut line = 0;

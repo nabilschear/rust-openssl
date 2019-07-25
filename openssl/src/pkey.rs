@@ -481,7 +481,7 @@ impl PKey<Private> {
         F: FnOnce(&mut [u8]) -> Result<usize, ErrorStack>,
     {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let mut cb = CallbackState::new(callback);
             let bio = MemBioSlice::new(der)?;
             cvt_p(ffi::d2i_PKCS8PrivateKey_bio(
@@ -505,7 +505,7 @@ impl PKey<Private> {
         passphrase: &[u8],
     ) -> Result<PKey<Private>, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let bio = MemBioSlice::new(der)?;
             let passphrase = CString::new(passphrase).unwrap();
             cvt_p(ffi::d2i_PKCS8PrivateKey_bio(

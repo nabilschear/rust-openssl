@@ -108,7 +108,7 @@ impl fmt::Display for Asn1TimeRef {
 
 impl Asn1Time {
     fn new() -> Result<Asn1Time, ErrorStack> {
-        //ffi::init();
+        ffi::init();
 
         unsafe {
             let handle = cvt_p(ffi::ASN1_TIME_new())?;
@@ -117,7 +117,7 @@ impl Asn1Time {
     }
 
     fn from_period(period: c_long) -> Result<Asn1Time, ErrorStack> {
-        //ffi::init();
+        ffi::init();
 
         unsafe {
             let handle = cvt_p(ffi::X509_gmtime_adj(ptr::null_mut(), period))?;

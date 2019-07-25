@@ -56,7 +56,7 @@ impl<T: Stackable> Drop for Stack<T> {
 impl<T: Stackable> Stack<T> {
     pub fn new() -> Result<Stack<T>, ErrorStack> {
         unsafe {
-            //ffi::init();
+            ffi::init();
             let ptr = cvt_p(OPENSSL_sk_new_null())?;
             Ok(Stack(ptr as *mut _))
         }

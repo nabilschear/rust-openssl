@@ -134,7 +134,7 @@ extern crate hex;
 extern crate tempdir;
 
 #[doc(inline)]
-//pub use //ffi::init();
+pub use //ffi::init();
 
 use sgx_trts::libc::c_int;
 
