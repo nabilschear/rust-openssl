@@ -18,6 +18,10 @@ v111 = []
 
 vendored = ['openssl-sys/vendored']
 
+[lib]
+name = "openssl"
+crate-type = ["rlib"]
+
 [dependencies]
 sgx_tstd = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git" }
 bitflags = "1.0"
