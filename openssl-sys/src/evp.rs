@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 use *;
 
 pub const EVP_MAX_MD_SIZE: c_uint = 64;

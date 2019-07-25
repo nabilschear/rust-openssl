@@ -20,6 +20,7 @@
 //!     let extension: X509Extension = bc.build().unwrap();
 //! }
 //! ```
+use std::prelude::v1::*;
 use std::fmt::Write;
 
 use error::ErrorStack;

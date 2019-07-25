@@ -5,7 +5,7 @@ macro_rules! private_key_from_pem {
         $(#[$m2])*
         pub fn $n2(pem: &[u8], passphrase: &[u8]) -> Result<$t, ::error::ErrorStack> {
             unsafe {
-                ffi::init();
+                ////ffi::init();
                 let bio = try!(::bio::MemBioSlice::new(pem));
                 let passphrase = ::std::ffi::CString::new(passphrase).unwrap();
                 cvt_p($f(bio.as_ptr(),
@@ -21,7 +21,7 @@ macro_rules! private_key_from_pem {
             where F: FnOnce(&mut [u8]) -> Result<usize, ::error::ErrorStack>
         {
             unsafe {
-                ffi::init();
+                ////ffi::init();
                 let mut cb = ::util::CallbackState::new(callback);
                 let bio = try!(::bio::MemBioSlice::new(pem));
                 cvt_p($f(bio.as_ptr(),
@@ -59,12 +59,12 @@ macro_rules! private_key_to_pem {
         ) -> Result<Vec<u8>, ::error::ErrorStack> {
             unsafe {
                 let bio = try!(::bio::MemBio::new());
-                assert!(passphrase.len() <= ::libc::c_int::max_value() as usize);
+                assert!(passphrase.len() <= ::sgx_trts::libc::c_int::max_value() as usize);
                 try!(cvt($f(bio.as_ptr(),
                             self.as_ptr(),
                             cipher.as_ptr(),
                             passphrase.as_ptr() as *const _ as *mut _,
-                            passphrase.len() as ::libc::c_int,
+                            passphrase.len() as ::sgx_trts::libc::c_int,
                             None,
                             ptr::null_mut())));
                 Ok(bio.get_buf().to_owned())
@@ -107,8 +107,8 @@ macro_rules! from_der {
         $(#[$m])*
         pub fn $n(der: &[u8]) -> Result<$t, ::error::ErrorStack> {
             unsafe {
-                ::ffi::init();
-                let len = ::std::cmp::min(der.len(), ::libc::c_long::max_value() as usize) as ::libc::c_long;
+                //ffi::init();
+                let len = ::std::cmp::min(der.len(), ::sgx_trts::libc::c_long::max_value() as usize) as ::sgx_trts::libc::c_long;
                 ::cvt_p($f(::std::ptr::null_mut(), &mut der.as_ptr(), len))
                     .map(|p| ::foreign_types::ForeignType::from_ptr(p))
             }
@@ -121,7 +121,7 @@ macro_rules! from_pem {
         $(#[$m])*
         pub fn $n(pem: &[u8]) -> Result<$t, ::error::ErrorStack> {
             unsafe {
-                ::init();
+                //ffi::init();
                 let bio = try!(::bio::MemBioSlice::new(pem));
                 cvt_p($f(bio.as_ptr(), ::std::ptr::null_mut(), None, ::std::ptr::null_mut()))
                     .map(|p| ::foreign_types::ForeignType::from_ptr(p))

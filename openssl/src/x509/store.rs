@@ -39,7 +39,7 @@
 //!     let store: X509Store = builder.build();
 //! }
 //! ```
-
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
 use std::mem;
@@ -64,7 +64,7 @@ impl X509StoreBuilder {
     /// The store is initially empty.
     pub fn new() -> Result<X509StoreBuilder, ErrorStack> {
         unsafe {
-            ffi::init();
+            ////ffi::init();
 
             cvt_p(ffi::X509_STORE_new()).map(X509StoreBuilder)
         }

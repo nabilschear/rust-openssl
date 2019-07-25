@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 
 #[allow(unused_imports)]
 use *;

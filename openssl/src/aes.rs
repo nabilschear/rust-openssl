@@ -55,8 +55,9 @@
 //! assert_eq!(&orig_key[..], &key_to_wrap[..]);
 //! ```
 //!
+use std::prelude::v1::*;
 use ffi;
-use libc::{c_int, c_uint};
+use sgx_trts::libc::{c_int, c_uint};
 use std::{mem, ptr};
 
 use symm::Mode;

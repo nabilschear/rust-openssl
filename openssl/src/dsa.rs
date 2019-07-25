@@ -4,10 +4,10 @@
 //! DSA uses asymetrical keys and an algorithm to output a signature of the message
 //! using the private key that can be validated with the public key but not be generated
 //! without the private key.
-
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::fmt;
 use std::mem;
 use std::ptr;
@@ -198,7 +198,7 @@ impl Dsa<Private> {
     /// [`DSA_generate_parameters_ex`]: https://www.openssl.org/docs/man1.1.0/crypto/DSA_generate_parameters_ex.html
     /// [`DSA_generate_key`]: https://www.openssl.org/docs/man1.1.0/crypto/DSA_generate_key.html
     pub fn generate(bits: u32) -> Result<Dsa<Private>, ErrorStack> {
-        ffi::init();
+        //ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(ffi::DSA_generate_parameters_ex(
@@ -227,7 +227,7 @@ impl Dsa<Private> {
         priv_key: BigNum,
         pub_key: BigNum,
     ) -> Result<Dsa<Private>, ErrorStack> {
-        ffi::init();
+        //ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(DSA_set0_pqg(dsa.0, p.as_ptr(), q.as_ptr(), g.as_ptr()))?;
@@ -274,7 +274,7 @@ impl Dsa<Public> {
         g: BigNum,
         pub_key: BigNum,
     ) -> Result<Dsa<Public>, ErrorStack> {
-        ffi::init();
+        //ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(DSA_set0_pqg(dsa.0, p.as_ptr(), q.as_ptr(), g.as_ptr()))?;

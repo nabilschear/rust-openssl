@@ -57,9 +57,10 @@
 //!     }
 //! }
 //! ```
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef, Opaque};
-use libc::{c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
+use sgx_trts::libc::{c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
 use std::any::TypeId;
 use std::cmp;
 use std::collections::HashMap;
@@ -75,7 +76,8 @@ use std::path::Path;
 use std::ptr;
 use std::slice;
 use std::str;
-use std::sync::{Arc, Mutex};
+use std::sync::{SgxMutex};
+use std::sync::{Arc};
 
 use dh::{Dh, DhRef};
 #[cfg(all(ossl101, not(ossl110)))]
@@ -99,7 +101,7 @@ use x509::store::{X509StoreBuilderRef, X509StoreRef};
 #[cfg(any(ossl102, libressl261))]
 use x509::verify::X509VerifyParamRef;
 use x509::{X509Name, X509Ref, X509StoreContextRef, X509VerifyResult, X509};
-use {cvt, cvt_n, cvt_p, init};
+use {cvt, cvt_n, cvt_p};
 
 pub use ssl::connector::{
     ConnectConfiguration, SslAcceptor, SslAcceptorBuilder, SslConnector, SslConnectorBuilder,
@@ -125,7 +127,7 @@ mod test;
 #[cfg(ossl111)]
 pub fn cipher_name(std_name: &str) -> &'static str {
     unsafe {
-        ffi::init();
+        //ffi::init();
 
         let s = CString::new(std_name).unwrap();
         let ptr = ffi::OPENSSL_cipher_name(s.as_ptr());
@@ -484,8 +486,8 @@ impl NameType {
 }
 
 lazy_static! {
-    static ref INDEXES: Mutex<HashMap<TypeId, c_int>> = Mutex::new(HashMap::new());
-    static ref SSL_INDEXES: Mutex<HashMap<TypeId, c_int>> = Mutex::new(HashMap::new());
+    static ref INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
+    static ref SSL_INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
 
     static ref SESSION_CTX_INDEX: Index<Ssl, SslContext> = Ssl::new_ex_index().unwrap();
 }
@@ -631,7 +633,7 @@ impl SslContextBuilder {
     /// [`SSL_CTX_new`]: https://www.openssl.org/docs/manmaster/man3/SSL_CTX_new.html
     pub fn new(method: SslMethod) -> Result<SslContextBuilder, ErrorStack> {
         unsafe {
-            init();
+            //init();
             let ctx = cvt_p(ffi::SSL_CTX_new(method.as_ptr()))?;
 
             Ok(SslContextBuilder::from_ptr(ctx))
@@ -1762,7 +1764,7 @@ impl SslContext {
         T: 'static + Sync + Send,
     {
         unsafe {
-            ffi::init();
+            //ffi::init();
             let idx = cvt_n(get_new_idx(free_data_box::<T>))?;
             Ok(Index::from_raw(idx))
         }
@@ -2254,7 +2256,7 @@ impl Ssl {
         T: 'static + Sync + Send,
     {
         unsafe {
-            ffi::init();
+            //ffi::init();
             let idx = cvt_n(get_new_ssl_idx(free_data_box::<T>))?;
             Ok(Index::from_raw(idx))
         }

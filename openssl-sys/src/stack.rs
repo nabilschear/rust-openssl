@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 
 cfg_if! {
     if #[cfg(ossl110)] {

@@ -1,5 +1,5 @@
-use libc::*;
-
+use sgx_trts::libc::*;
+use std::untrusted::fs;
 use *;
 
 pub const BIO_TYPE_NONE: c_int = 0;
@@ -74,7 +74,7 @@ cfg_if! {
 }
 extern "C" {
     #[cfg(not(osslconf = "OPENSSL_NO_STDIO"))]
-    pub fn BIO_new_fp(stream: *mut FILE, close_flag: c_int) -> *mut BIO;
+    //pub fn BIO_new_fp(stream: *mut FILE, close_flag: c_int) -> *mut BIO;
     #[cfg(any(ossl110, libressl273))]
     pub fn BIO_set_data(a: *mut ::BIO, data: *mut c_void);
     #[cfg(any(ossl110, libressl273))]

@@ -1,4 +1,5 @@
-use libc::c_int;
+use std::prelude::v1::*;
+use sgx_trts::libc::c_int;
 use std::marker::PhantomData;
 
 /// A slot in a type's "extra data" structure.

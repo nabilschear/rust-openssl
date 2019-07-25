@@ -1,6 +1,7 @@
-use ffi;
+use std::prelude::v1::*;
+//use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef, Opaque};
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::borrow::Borrow;
 use std::convert::AsRef;
 use std::iter;
@@ -55,7 +56,7 @@ impl<T: Stackable> Drop for Stack<T> {
 impl<T: Stackable> Stack<T> {
     pub fn new() -> Result<Stack<T>, ErrorStack> {
         unsafe {
-            ffi::init();
+            //ffi::init();
             let ptr = cvt_p(OPENSSL_sk_new_null())?;
             Ok(Stack(ptr as *mut _))
         }

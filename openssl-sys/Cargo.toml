@@ -15,7 +15,8 @@ build = "build/main.rs"
 vendored = ['openssl-src']
 
 [dependencies]
-libc = "0.2"
+sgx_tstd = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git" }
+sgx_trts = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git" }
 
 [build-dependencies]
 cc = "1.0"

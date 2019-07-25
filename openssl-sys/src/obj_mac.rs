@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 
 pub const NID_undef: c_int = 0;
 pub const NID_itu_t: c_int = 645;

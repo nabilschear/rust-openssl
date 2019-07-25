@@ -28,9 +28,10 @@
 //!     let encrypted_len = rsa.public_encrypt(data, &mut buf, Padding::PKCS1).unwrap();
 //! }
 //! ```
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::fmt;
 use std::mem;
 use std::ptr;

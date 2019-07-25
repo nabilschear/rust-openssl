@@ -3,6 +3,7 @@
 //! See [OpenSSL's documentation] for details.
 //!
 //! [OpenSSL's documentation]: https://www.openssl.org/docs/fips/UserGuide-2.0.pdf
+use std::prelude::v1::*;
 use cvt;
 use error::ErrorStack;
 use ffi;

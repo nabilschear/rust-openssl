@@ -61,9 +61,10 @@
 //! # let target = hmac.clone();
 //! assert!(memcmp::eq(&hmac, &target));
 //! ```
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::io::{self, Write};
 use std::marker::PhantomData;
 use std::ptr;
@@ -157,7 +158,7 @@ impl<'a> Signer<'a> {
         T: HasPrivate,
     {
         unsafe {
-            ffi::init();
+            ////ffi::init();
 
             let ctx = cvt_p(EVP_MD_CTX_new())?;
             let mut pctx: *mut ffi::EVP_PKEY_CTX = ptr::null_mut();
@@ -356,7 +357,7 @@ impl<'a> Verifier<'a> {
         T: HasPublic,
     {
         unsafe {
-            ffi::init();
+            ////ffi::init();
 
             let ctx = cvt_p(EVP_MD_CTX_new())?;
             let mut pctx: *mut ffi::EVP_PKEY_CTX = ptr::null_mut();
@@ -501,9 +502,9 @@ use ffi::EVP_DigestVerifyFinal;
 #[allow(bad_style)]
 unsafe fn EVP_DigestVerifyFinal(
     ctx: *mut ffi::EVP_MD_CTX,
-    sigret: *const ::libc::c_uchar,
-    siglen: ::libc::size_t,
-) -> ::libc::c_int {
+    sigret: *const ::sgx_trts::libc::c_uchar,
+    siglen: ::sgx_trts::libc::size_t,
+) -> ::sgx_trts::libc::c_int {
     ffi::EVP_DigestVerifyFinal(ctx, sigret as *mut _, siglen)
 }
 

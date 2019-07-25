@@ -1,6 +1,7 @@
 //! A collection of numerical identifiers for OpenSSL objects.
+use std::prelude::v1::*;
 use ffi;
-use libc::{c_char, c_int};
+use sgx_trts::libc::{c_char, c_int};
 
 use std::ffi::CStr;
 use std::str;

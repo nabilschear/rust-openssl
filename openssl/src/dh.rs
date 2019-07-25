@@ -1,3 +1,4 @@
+use std::prelude::v1::*;
 use error::ErrorStack;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
@@ -82,7 +83,7 @@ impl Dh<Params> {
     #[cfg(any(ossl102, ossl110))]
     pub fn get_1024_160() -> Result<Dh<Params>, ErrorStack> {
         unsafe {
-            ffi::init();
+            //ffi::init();
             cvt_p(ffi::DH_get_1024_160()).map(|p| Dh::from_ptr(p))
         }
     }
@@ -91,7 +92,7 @@ impl Dh<Params> {
     #[cfg(any(ossl102, ossl110))]
     pub fn get_2048_224() -> Result<Dh<Params>, ErrorStack> {
         unsafe {
-            ffi::init();
+            //ffi::init();
             cvt_p(ffi::DH_get_2048_224()).map(|p| Dh::from_ptr(p))
         }
     }
@@ -100,7 +101,7 @@ impl Dh<Params> {
     #[cfg(any(ossl102, ossl110))]
     pub fn get_2048_256() -> Result<Dh<Params>, ErrorStack> {
         unsafe {
-            ffi::init();
+            //ffi::init();
             cvt_p(ffi::DH_get_2048_256()).map(|p| Dh::from_ptr(p))
         }
     }
@@ -116,7 +117,7 @@ cfg_if! {
             p: *mut ffi::BIGNUM,
             q: *mut ffi::BIGNUM,
             g: *mut ffi::BIGNUM,
-        ) -> ::libc::c_int {
+        ) -> ::sgx_trts::libc::c_int {
             (*dh).p = p;
             (*dh).q = q;
             (*dh).g = g;

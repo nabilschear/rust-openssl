@@ -1,6 +1,7 @@
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use libc::c_ulong;
+use sgx_trts::libc::c_ulong;
 use stack::Stackable;
 use std::ffi::CStr;
 use std::str;

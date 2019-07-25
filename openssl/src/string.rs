@@ -1,6 +1,7 @@
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use libc::{c_char, c_void};
+use sgx_trts::libc::{c_char, c_void};
 use std::convert::AsRef;
 use std::ffi::CStr;
 use std::fmt;
@@ -90,6 +91,6 @@ unsafe fn free(buf: *mut c_char) {
     ::ffi::CRYPTO_free(
         buf as *mut c_void,
         concat!(file!(), "\0").as_ptr() as *const c_char,
-        line!() as ::libc::c_int,
+        line!() as ::sgx_trts::libc::c_int,
     );
 }

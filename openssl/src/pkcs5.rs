@@ -1,5 +1,6 @@
+use std::prelude::v1::*;
 use ffi;
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::ptr;
 
 use cvt;
@@ -40,7 +41,7 @@ pub fn bytes_to_key(
             None => ptr::null(),
         };
 
-        ffi::init();
+        //ffi::init();
 
         let mut iv = cipher.iv_len().map(|l| vec![0; l]);
 
@@ -92,7 +93,7 @@ pub fn pbkdf2_hmac(
         assert!(salt.len() <= c_int::max_value() as usize);
         assert!(key.len() <= c_int::max_value() as usize);
 
-        ffi::init();
+        //ffi::init();
         cvt(ffi::PKCS5_PBKDF2_HMAC(
             pass.as_ptr() as *const _,
             pass.len() as c_int,
@@ -121,7 +122,7 @@ pub fn scrypt(
     key: &mut [u8],
 ) -> Result<(), ErrorStack> {
     unsafe {
-        ffi::init();
+        //ffi::init();
         cvt(ffi::EVP_PBE_scrypt(
             pass.as_ptr() as *const _,
             pass.len(),

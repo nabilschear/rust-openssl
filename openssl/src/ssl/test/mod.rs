@@ -1,5 +1,5 @@
 #![allow(unused_imports)]
-
+use std::prelude::v1::*;
 use hex;
 use std::env;
 use std::fs::File;

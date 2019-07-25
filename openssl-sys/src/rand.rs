@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 
 extern "C" {
     pub fn RAND_bytes(buf: *mut u8, num: c_int) -> c_int;

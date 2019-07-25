@@ -1,8 +1,8 @@
 //! PKCS #12 archives.
-
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use std::ffi::CString;
 use std::ptr;
 
@@ -88,7 +88,7 @@ impl Pkcs12 {
     /// * `iter` - `2048`
     /// * `mac_iter` - `2048`
     pub fn builder() -> Pkcs12Builder {
-        ffi::init();
+        //ffi::init();
 
         Pkcs12Builder {
             nid_key: Nid::UNDEF,  //nid::PBE_WITHSHA1AND3_KEY_TRIPLEDES_CBC,

@@ -46,7 +46,7 @@
 //! }
 //! ```
 use ffi;
-use libc::c_void;
+use sgx_trts::libc::c_void;
 use std::mem;
 
 /// Computes the SHA1 hash of some data.

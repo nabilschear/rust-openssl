@@ -4,14 +4,14 @@
 //! X.509 certificates.  The OpenSSL implementation of CMS is used in email encryption
 //! generated from a `Vec` of bytes.  This `Vec` follows the smime protocol standards.
 //! Data accepted by this module will be smime type `enveloped-data`.
-
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
 use std::ptr;
 
 use bio::{MemBio, MemBioSlice};
 use error::ErrorStack;
-use libc::c_uint;
+use sgx_trts::libc::c_uint;
 use pkey::{HasPrivate, PKeyRef};
 use stack::StackRef;
 use x509::{X509Ref, X509};

@@ -1,3 +1,4 @@
+use std::prelude::v1::*;
 use ffi;
 use std::fmt;
 use std::io;
@@ -190,7 +191,7 @@ unsafe impl Send for Hasher {}
 impl Hasher {
     /// Creates a new `Hasher` with the specified hash type.
     pub fn new(ty: MessageDigest) -> Result<Hasher, ErrorStack> {
-        ffi::init();
+        //ffi::init();
 
         let ctx = unsafe { cvt_p(EVP_MD_CTX_new())? };
 

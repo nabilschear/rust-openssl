@@ -1,6 +1,7 @@
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use libc::c_uint;
+use sgx_trts::libc::c_uint;
 use std::net::IpAddr;
 
 use cvt;

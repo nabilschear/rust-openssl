@@ -26,10 +26,11 @@
 //!     encrypted.truncate(enc_len);
 //! }
 //! ```
+use std::prelude::v1::*;
 use error::ErrorStack;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use pkey::{HasPrivate, HasPublic, PKey, PKeyRef};
 use std::cmp;
 use std::ptr;

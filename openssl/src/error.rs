@@ -15,7 +15,8 @@
 //!     Err(e) => println!("Parsing Error: {:?}", e),
 //! }
 //! ```
-use libc::{c_char, c_int, c_ulong};
+use std::prelude::v1::*;
+use sgx_trts::libc::{c_char, c_int, c_ulong};
 use std::borrow::Cow;
 use std::error;
 use std::ffi::CStr;
@@ -109,7 +110,7 @@ impl Error {
     /// Returns the first error on the OpenSSL error stack.
     pub fn get() -> Option<Error> {
         unsafe {
-            ffi::init();
+            //ffi::init();
 
             let mut file = ptr::null();
             let mut line = 0;

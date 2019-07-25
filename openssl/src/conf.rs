@@ -1,4 +1,5 @@
 //! Interface for processing OpenSSL configuration files.
+use std::prelude::v1::*;
 use ffi;
 
 use cvt_p;
@@ -10,7 +11,7 @@ impl ConfMethod {
     /// Retrieve handle to the default OpenSSL configuration file processing function.
     pub fn default() -> ConfMethod {
         unsafe {
-            ffi::init();
+            //ffi::init();
             // `NCONF` stands for "New Conf", as described in crypto/conf/conf_lib.c. This is
             // a newer API than the "CONF classic" functions.
             ConfMethod(ffi::NCONF_default())

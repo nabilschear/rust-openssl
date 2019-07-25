@@ -1,8 +1,9 @@
+use std::prelude::v1::*;
 use bio::{MemBio, MemBioSlice};
 use error::ErrorStack;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use libc::c_int;
+use sgx_trts::libc::c_int;
 use pkey::{HasPrivate, PKeyRef};
 use stack::StackRef;
 use std::ptr;
@@ -70,7 +71,7 @@ impl Pkcs7 {
     ///
     /// [`SMIME_read_PKCS7`]: https://www.openssl.org/docs/man1.1.0/crypto/SMIME_read_PKCS7.html
     pub fn from_smime(input: &[u8]) -> Result<(Pkcs7, Option<Vec<u8>>), ErrorStack> {
-        ffi::init();
+        //ffi::init();
 
         let input_bio = MemBioSlice::new(input)?;
         let mut bcont_bio = ptr::null_mut();

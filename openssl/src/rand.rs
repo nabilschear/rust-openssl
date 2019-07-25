@@ -10,8 +10,9 @@
 //! let mut buf = [0; 256];
 //! rand_bytes(&mut buf).unwrap();
 //! ```
+use std::prelude::v1::*;
 use ffi;
-use libc::c_int;
+use sgx_trts::libc::c_int;
 
 use cvt;
 use error::ErrorStack;
@@ -34,7 +35,7 @@ use error::ErrorStack;
 /// [`RAND_bytes`]: https://www.openssl.org/docs/man1.1.0/crypto/RAND_bytes.html
 pub fn rand_bytes(buf: &mut [u8]) -> Result<(), ErrorStack> {
     unsafe {
-        ffi::init();
+        //ffi::init();
         assert!(buf.len() <= c_int::max_value() as usize);
         cvt(ffi::RAND_bytes(buf.as_mut_ptr(), buf.len() as c_int)).map(|_| ())
     }

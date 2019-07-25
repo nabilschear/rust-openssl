@@ -109,6 +109,14 @@
 //! ```
 #![doc(html_root_url = "https://docs.rs/openssl/0.10")]
 
+#![cfg_attr(not(target_env = "sgx"), no_std)]
+#![cfg_attr(target_env = "sgx", feature(rustc_private))]
+
+#[cfg(not(target_env = "sgx"))]
+#[macro_use]
+extern crate sgx_tstd as std;
+use std::prelude::v1::*;
+
 #[macro_use]
 extern crate bitflags;
 #[macro_use]
@@ -117,7 +125,7 @@ extern crate cfg_if;
 extern crate foreign_types;
 #[macro_use]
 extern crate lazy_static;
-extern crate libc;
+extern crate sgx_trts;
 extern crate openssl_sys as ffi;
 
 #[cfg(test)]
@@ -126,9 +134,9 @@ extern crate hex;
 extern crate tempdir;
 
 #[doc(inline)]
-pub use ffi::init;
+//pub use //ffi::init();
 
-use libc::c_int;
+use sgx_trts::libc::c_int;
 
 use error::ErrorStack;
 

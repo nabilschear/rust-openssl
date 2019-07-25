@@ -24,9 +24,10 @@
 //! use openssl::asn1::Asn1Time;
 //! let tomorrow = Asn1Time::days_from_now(1);
 //! ```
+use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use libc::{c_char, c_int, c_long};
+use sgx_trts::libc::{c_char, c_int, c_long};
 use std::ffi::CString;
 use std::fmt;
 use std::ptr;
@@ -107,7 +108,7 @@ impl fmt::Display for Asn1TimeRef {
 
 impl Asn1Time {
     fn new() -> Result<Asn1Time, ErrorStack> {
-        ffi::init();
+        //ffi::init();
 
         unsafe {
             let handle = cvt_p(ffi::ASN1_TIME_new())?;
@@ -116,7 +117,7 @@ impl Asn1Time {
     }
 
     fn from_period(period: c_long) -> Result<Asn1Time, ErrorStack> {
-        ffi::init();
+        //ffi::init();
 
         unsafe {
             let handle = cvt_p(ffi::X509_gmtime_adj(ptr::null_mut(), period))?;
@@ -359,7 +360,7 @@ cfg_if! {
         use ffi::ASN1_STRING_get0_data;
     } else {
         #[allow(bad_style)]
-        unsafe fn ASN1_STRING_get0_data(s: *mut ffi::ASN1_STRING) -> *const ::libc::c_uchar {
+        unsafe fn ASN1_STRING_get0_data(s: *mut ffi::ASN1_STRING) -> *const ::sgx_trts::libc::c_uchar {
             ffi::ASN1_STRING_data(s)
         }
     }

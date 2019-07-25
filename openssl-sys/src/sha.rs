@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 
 pub type SHA_LONG = c_uint;
 

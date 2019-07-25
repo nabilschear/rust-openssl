@@ -1,4 +1,4 @@
-use libc::*;
+use sgx_trts::libc::*;
 use *;
 
 pub enum CMS_ContentInfo {}
