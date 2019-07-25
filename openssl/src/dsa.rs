@@ -198,7 +198,7 @@ impl Dsa<Private> {
     /// [`DSA_generate_parameters_ex`]: https://www.openssl.org/docs/man1.1.0/crypto/DSA_generate_parameters_ex.html
     /// [`DSA_generate_key`]: https://www.openssl.org/docs/man1.1.0/crypto/DSA_generate_key.html
     pub fn generate(bits: u32) -> Result<Dsa<Private>, ErrorStack> {
-        //ffi::init();
+        ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(ffi::DSA_generate_parameters_ex(
@@ -227,7 +227,7 @@ impl Dsa<Private> {
         priv_key: BigNum,
         pub_key: BigNum,
     ) -> Result<Dsa<Private>, ErrorStack> {
-        //ffi::init();
+        ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(DSA_set0_pqg(dsa.0, p.as_ptr(), q.as_ptr(), g.as_ptr()))?;
@@ -274,7 +274,7 @@ impl Dsa<Public> {
         g: BigNum,
         pub_key: BigNum,
     ) -> Result<Dsa<Public>, ErrorStack> {
-        //ffi::init();
+        ffi::init();
         unsafe {
             let dsa = Dsa::from_ptr(cvt_p(ffi::DSA_new())?);
             cvt(DSA_set0_pqg(dsa.0, p.as_ptr(), q.as_ptr(), g.as_ptr()))?;

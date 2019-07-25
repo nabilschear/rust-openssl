@@ -127,7 +127,7 @@ mod test;
 #[cfg(ossl111)]
 pub fn cipher_name(std_name: &str) -> &'static str {
     unsafe {
-        init();
+        ffi:init();
 
         let s = CString::new(std_name).unwrap();
         let ptr = ffi::OPENSSL_cipher_name(s.as_ptr());
@@ -633,7 +633,7 @@ impl SslContextBuilder {
     /// [`SSL_CTX_new`]: https://www.openssl.org/docs/manmaster/man3/SSL_CTX_new.html
     pub fn new(method: SslMethod) -> Result<SslContextBuilder, ErrorStack> {
         unsafe {
-            //ffi::init();();
+            init();
             let ctx = cvt_p(ffi::SSL_CTX_new(method.as_ptr()))?;
 
             Ok(SslContextBuilder::from_ptr(ctx))
@@ -1764,7 +1764,7 @@ impl SslContext {
         T: 'static + Sync + Send,
     {
         unsafe {
-            init();
+            ffi::init();
             let idx = cvt_n(get_new_idx(free_data_box::<T>))?;
             Ok(Index::from_raw(idx))
         }
@@ -2256,7 +2256,7 @@ impl Ssl {
         T: 'static + Sync + Send,
     {
         unsafe {
-            init();
+            ffi::init();
             let idx = cvt_n(get_new_ssl_idx(free_data_box::<T>))?;
             Ok(Index::from_raw(idx))
         }
@@ -2293,7 +2293,7 @@ impl Ssl {
         }
     }
 
-    /// ffi::init();iates a client-side TLS handshake.
+    /// Initiates a client-side TLS handshake.
     ///
     /// This corresponds to [`SSL_connect`].
     ///
@@ -2310,7 +2310,7 @@ impl Ssl {
         SslStreamBuilder::new(self, stream).connect()
     }
 
-    /// ffi::init();iates a server-side TLS handshake.
+    /// Initiates a server-side TLS handshake.
     ///
     /// This corresponds to [`SSL_accept`].
     ///
@@ -3666,7 +3666,7 @@ where
         }
     }
 
-    /// ffi::init();iates the handshake.
+    /// Initiates the handshake.
     ///
     /// This will fail if `set_accept_state` or `set_connect_state` was not called first.
     ///
@@ -3886,11 +3886,11 @@ cfg_if! {
             )
         }
     } else {
-        use std::sync::{Once, ONCE_ffi::init();};
+        use std::sync::{Once, ONCE_INIT};
 
         unsafe fn get_new_idx(f: ffi::CRYPTO_EX_free) -> c_int {
             // hack around https://rt.openssl.org/Ticket/Display.html?id=3710&user=guest&pass=guest
-            static ONCE: Once = ONCE_ffi::init();;
+            static ONCE: Once = ONCE_INIT;
             ONCE.call_once(|| {
                 ffi::SSL_CTX_get_ex_new_index(0, ptr::null_mut(), None, None, None);
             });
@@ -3900,7 +3900,7 @@ cfg_if! {
 
         unsafe fn get_new_ssl_idx(f: ffi::CRYPTO_EX_free) -> c_int {
             // hack around https://rt.openssl.org/Ticket/Display.html?id=3710&user=guest&pass=guest
-            static ONCE: Once = ONCE_ffi::init();;
+            static ONCE: Once = ONCE_INIT;
             ONCE.call_once(|| {
                 ffi::SSL_get_ex_new_index(0, ptr::null_mut(), None, None, None);
             });
