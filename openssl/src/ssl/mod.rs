@@ -101,7 +101,7 @@ use x509::store::{X509StoreBuilderRef, X509StoreRef};
 #[cfg(any(ossl102, libressl261))]
 use x509::verify::X509VerifyParamRef;
 use x509::{X509Name, X509Ref, X509StoreContextRef, X509VerifyResult, X509};
-use {cvt, cvt_n, cvt_p,init};
+use {cvt, cvt_n, cvt_p, init};
 
 pub use ssl::connector::{
     ConnectConfiguration, SslAcceptor, SslAcceptorBuilder, SslConnector, SslConnectorBuilder,
@@ -127,7 +127,7 @@ mod test;
 #[cfg(ossl111)]
 pub fn cipher_name(std_name: &str) -> &'static str {
     unsafe {
-        ffi:init();
+        ffi::init();
 
         let s = CString::new(std_name).unwrap();
         let ptr = ffi::OPENSSL_cipher_name(s.as_ptr());
