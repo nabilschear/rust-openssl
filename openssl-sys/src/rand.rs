@@ -1,4 +1,8 @@
+#[cfg(target_env = "sgx")]
 use sgx_trts::libc::*;
+
+#[cfg(not(target_env = "sgx"))]
+use libc::*;
 
 extern "C" {
     pub fn RAND_bytes(buf: *mut u8, num: c_int) -> c_int;

@@ -2,16 +2,26 @@
 #![allow(dead_code, overflowing_literals, unused_imports)]
 #![doc(html_root_url = "https://docs.rs/openssl-sys/0.9")]
 
-#![cfg_attr(not(target_env = "sgx"), no_std)]
+#![cfg_attr(target_env = "sgx", no_std)]
 #![cfg_attr(target_env = "sgx", feature(rustc_private))]
 
-#[cfg(not(target_env = "sgx"))]
+#[cfg(target_env = "sgx")]
 #[macro_use]
 extern crate sgx_tstd as std;
+
 use std::prelude::v1::*;
 
+#[cfg(target_env = "sgx")]
 extern crate sgx_trts;
+
+#[cfg(not(target_env = "sgx"))]
+extern crate libc;
+
+#[cfg(target_env = "sgx")]
 use sgx_trts::libc::*;
+
+#[cfg(not(target_env = "sgx"))]
+use libc::*;
 
 pub use aes::*;
 pub use asn1::*;

@@ -1,4 +1,10 @@
+#[cfg(target_env = "sgx")]
 use sgx_trts::libc::*;
+
+#[cfg(not(target_env = "sgx"))]
+use libc::*;
+
+#[cfg(target_env = "sgx")]
 use std::untrusted::fs;
 use *;
 

@@ -1,4 +1,8 @@
+#[cfg(target_env = "sgx")]
 use sgx_trts::libc::*;
+
+#[cfg(not(target_env = "sgx"))]
+use libc::*;
 use *;
 
 pub const EVP_MAX_MD_SIZE: c_uint = 64;

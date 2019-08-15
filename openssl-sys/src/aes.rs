@@ -1,4 +1,8 @@
+#[cfg(target_env = "sgx")]
 use sgx_trts::libc::*;
+
+#[cfg(not(target_env = "sgx"))]
+use libc::*;
 
 pub const AES_ENCRYPT: c_int = 1;
 pub const AES_DECRYPT: c_int = 0;
