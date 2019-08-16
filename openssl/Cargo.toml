@@ -21,8 +21,8 @@ v110 = []
 v111 = []
 vendored = ['openssl-sys/vendored']
 # sgx features
-default = ["nosgx"]
-nosgx = ["libc"]
+default = []
+nosgx = ["libc", "openssl-sys/nosgx"]
 sgx = ["sgx_tstd", "sgx_trts", "openssl-sys/sgx"]
 
 [dependencies]
@@ -30,7 +30,7 @@ bitflags = "1.0"
 cfg-if = "0.1"
 foreign-types = "0.3.1"
 lazy_static = {  version = "1", features = ["spin_no_std"] }
-openssl-sys = { version = "0.9.48", path = "../openssl-sys",  default-features = false }
+openssl-sys = { version = "0.9.48", path = "../openssl-sys" }
 sgx_tstd = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_tstd", optional=true }
 sgx_trts = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_trts", optional=true }
 libc = { version="0.2", optional=true }
