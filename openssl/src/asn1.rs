@@ -27,7 +27,10 @@
 use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use sgx_trts::libc::{c_char, c_int, c_long};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::ffi::CString;
 use std::fmt;
 use std::ptr;
@@ -360,7 +363,7 @@ cfg_if! {
         use ffi::ASN1_STRING_get0_data;
     } else {
         #[allow(bad_style)]
-        unsafe fn ASN1_STRING_get0_data(s: *mut ffi::ASN1_STRING) -> *const ::sgx_trts::libc::c_uchar {
+        unsafe fn ASN1_STRING_get0_data(s: *mut ffi::ASN1_STRING) -> *const c_uchar {
             ffi::ASN1_STRING_data(s)
         }
     }

@@ -11,7 +11,10 @@ use std::ptr;
 
 use bio::{MemBio, MemBioSlice};
 use error::ErrorStack;
-use sgx_trts::libc::c_uint;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use pkey::{HasPrivate, PKeyRef};
 use stack::StackRef;
 use x509::{X509Ref, X509};

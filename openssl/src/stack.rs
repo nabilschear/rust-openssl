@@ -1,7 +1,10 @@
 use std::prelude::v1::*;
 //use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef, Opaque};
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::borrow::Borrow;
 use std::convert::AsRef;
 use std::iter;

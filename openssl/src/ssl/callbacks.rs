@@ -3,11 +3,6 @@ use ffi;
 use foreign_types::ForeignType;
 use foreign_types::ForeignTypeRef;
 #[cfg(any(ossl111, not(osslconf = "OPENSSL_NO_PSK")))]
-use sgx_trts::libc::c_char;
-#[cfg(ossl111)]
-use sgx_trts::libc::size_t;
-use sgx_trts::libc::{c_int, c_uchar, c_uint, c_void};
-#[cfg(any(ossl111, not(osslconf = "OPENSSL_NO_PSK")))]
 use std::ffi::CStr;
 use std::mem;
 use std::ptr;
@@ -15,6 +10,11 @@ use std::slice;
 #[cfg(ossl111)]
 use std::str;
 use std::sync::Arc;
+
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 
 use dh::Dh;
 #[cfg(all(ossl101, not(ossl110)))]

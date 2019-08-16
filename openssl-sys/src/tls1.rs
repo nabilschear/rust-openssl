@@ -1,7 +1,6 @@
-#[cfg(target_env = "sgx")]
+#[cfg(feature = "sgx")]
 use sgx_trts::libc::*;
-
-#[cfg(not(target_env = "sgx"))]
+#[cfg(not(feature = "sgx"))]
 use libc::*;
 use std::mem;
 use std::ptr;

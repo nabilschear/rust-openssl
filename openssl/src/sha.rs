@@ -46,7 +46,10 @@
 //! }
 //! ```
 use ffi;
-use sgx_trts::libc::c_void;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::mem;
 
 /// Computes the SHA1 hash of some data.

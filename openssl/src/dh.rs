@@ -4,6 +4,10 @@ use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
 use std::mem;
 use std::ptr;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 
 use bn::BigNum;
 use pkey::{HasParams, Params};
@@ -117,7 +121,7 @@ cfg_if! {
             p: *mut ffi::BIGNUM,
             q: *mut ffi::BIGNUM,
             g: *mut ffi::BIGNUM,
-        ) -> ::sgx_trts::libc::c_int {
+        ) -> c_int {
             (*dh).p = p;
             (*dh).q = q;
             (*dh).g = g;

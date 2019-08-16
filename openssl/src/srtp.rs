@@ -1,7 +1,10 @@
 use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use sgx_trts::libc::c_ulong;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use stack::Stackable;
 use std::ffi::CStr;
 use std::str;

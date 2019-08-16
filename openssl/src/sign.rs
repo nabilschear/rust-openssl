@@ -64,7 +64,10 @@
 use std::prelude::v1::*;
 use ffi;
 use foreign_types::ForeignTypeRef;
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::io::{self, Write};
 use std::marker::PhantomData;
 use std::ptr;
@@ -502,9 +505,9 @@ use ffi::EVP_DigestVerifyFinal;
 #[allow(bad_style)]
 unsafe fn EVP_DigestVerifyFinal(
     ctx: *mut ffi::EVP_MD_CTX,
-    sigret: *const ::sgx_trts::libc::c_uchar,
-    siglen: ::sgx_trts::libc::size_t,
-) -> ::sgx_trts::libc::c_int {
+    sigret: *const c_uchar,
+    siglen: size_t,
+) -> c_int {
     ffi::EVP_DigestVerifyFinal(ctx, sigret as *mut _, siglen)
 }
 

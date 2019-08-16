@@ -60,7 +60,10 @@
 use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef, Opaque};
-use sgx_trts::libc::{c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::any::TypeId;
 use std::cmp;
 use std::collections::HashMap;
@@ -76,9 +79,13 @@ use std::path::Path;
 use std::ptr;
 use std::slice;
 use std::str;
+#[cfg(feature = "sgx")]
 use std::sync::{SgxMutex};
-use std::sync::{Arc};
 
+#[cfg(not(feature = "sgx"))]
+use std::sync::{Mutex};
+
+use std::sync::{Arc};
 use dh::{Dh, DhRef};
 #[cfg(all(ossl101, not(ossl110)))]
 use ec::EcKey;
@@ -485,9 +492,18 @@ impl NameType {
     pub const HOST_NAME: NameType = NameType(ffi::TLSEXT_NAMETYPE_host_name);
 }
 
+#[cfg(feature = "sgx")]
+ lazy_static! {
+     static ref INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
+     static ref SSL_INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
+
+     static ref SESSION_CTX_INDEX: Index<Ssl, SslContext> = Ssl::new_ex_index().unwrap();
+ }
+
+#[cfg(not(feature = "sgx"))]
 lazy_static! {
-    static ref INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
-    static ref SSL_INDEXES: SgxMutex<HashMap<TypeId, c_int>> = SgxMutex::new(HashMap::new());
+    static ref INDEXES: Mutex<HashMap<TypeId, c_int>> = Mutex::new(HashMap::new());
+    static ref SSL_INDEXES: Mutex<HashMap<TypeId, c_int>> = Mutex::new(HashMap::new());
 
     static ref SESSION_CTX_INDEX: Index<Ssl, SslContext> = Ssl::new_ex_index().unwrap();
 }

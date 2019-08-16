@@ -13,14 +13,15 @@ build = "build/main.rs"
 
 [features]
 vendored = ['openssl-src']
+# sgx features
+default = ["nosgx"]
+nosgx = ["libc"]
+sgx = ["sgx_tstd", "sgx_trts"]
 
-
-[target.'cfg(target_env = "sgx")'.dependencies]
-sgx_tstd = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_tstd" }
-sgx_trts = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_trts" }
-
-[target.'cfg(not(target_env = "sgx"))'.dependencies]
-libc = "0.2"
+[dependencies]
+sgx_tstd = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_tstd", optional=true }
+sgx_trts = { rev = "v1.0.8", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_trts", optional=true }
+libc = { version="0.2", optional=true }
 
 [build-dependencies]
 cc = "1.0"

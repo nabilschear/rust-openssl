@@ -3,7 +3,10 @@ use ffi::{
     self, BIO_clear_retry_flags, BIO_new, BIO_set_retry_read, BIO_set_retry_write, BIO,
     BIO_CTRL_FLUSH,
 };
-use sgx_trts::libc::{c_char, c_int, c_long, c_void, strlen};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::any::Any;
 use std::io;
 use std::io::prelude::*;

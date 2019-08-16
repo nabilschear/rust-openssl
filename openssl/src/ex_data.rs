@@ -1,5 +1,8 @@
 use std::prelude::v1::*;
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::marker::PhantomData;
 
 /// A slot in a type's "extra data" structure.

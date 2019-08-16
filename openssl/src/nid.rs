@@ -1,7 +1,10 @@
 //! A collection of numerical identifiers for OpenSSL objects.
 use std::prelude::v1::*;
 use ffi;
-use sgx_trts::libc::{c_char, c_int};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 
 use std::ffi::CStr;
 use std::str;

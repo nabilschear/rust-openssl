@@ -1,6 +1,9 @@
 use std::prelude::v1::*;
 use ffi;
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::marker::PhantomData;
 use std::ptr;
 use std::slice;
@@ -78,7 +81,7 @@ cfg_if! {
         use ffi::BIO_new_mem_buf;
     } else {
         #[allow(bad_style)]
-        unsafe fn BIO_new_mem_buf(buf: *const ::sgx_trts::libc::c_void, len: ::sgx_trts::libc::c_int) -> *mut ffi::BIO {
+        unsafe fn BIO_new_mem_buf(buf: *const c_void, len: c_int) -> *mut ffi::BIO {
             ffi::BIO_new_mem_buf(buf as *mut _, len)
         }
     }

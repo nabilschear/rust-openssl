@@ -30,7 +30,10 @@
 //! assert!(!eq(&a, &c));
 //! ```
 use ffi;
-use sgx_trts::libc::size_t;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 
 /// Returns `true` iff `a` and `b` contain the same bytes.
 ///

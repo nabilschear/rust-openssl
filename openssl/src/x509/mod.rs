@@ -9,7 +9,10 @@
 use std::prelude::v1::*;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use sgx_trts::libc::{c_int, c_long};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::error::Error;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -1372,7 +1375,7 @@ cfg_if! {
         };
 
         #[allow(bad_style)]
-        unsafe fn X509_REQ_get_version(x: *mut ffi::X509_REQ) -> ::sgx_trts::libc::c_long {
+        unsafe fn X509_REQ_get_version(x: *mut ffi::X509_REQ) -> c_long {
             ffi::ASN1_INTEGER_get((*(*x).req_info).version)
         }
 
@@ -1385,7 +1388,7 @@ cfg_if! {
         unsafe fn X509_ALGOR_get0(
             paobj: *mut *const ffi::ASN1_OBJECT,
             pptype: *mut c_int,
-            pval: *mut *mut ::sgx_trts::libc::c_void,
+            pval: *mut *mut c_void,
             alg: *const ffi::X509_ALGOR,
         ) {
             if !paobj.is_null() {

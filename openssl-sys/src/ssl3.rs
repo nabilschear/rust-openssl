@@ -1,7 +1,6 @@
-#[cfg(target_env = "sgx")]
+#[cfg(feature = "sgx")]
 use sgx_trts::libc::*;
-
-#[cfg(not(target_env = "sgx"))]
+#[cfg(not(feature = "sgx"))]
 use libc::*;
 
 pub const SSL3_VERSION: c_int = 0x300;

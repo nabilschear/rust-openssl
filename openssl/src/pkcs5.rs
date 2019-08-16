@@ -1,6 +1,9 @@
 use std::prelude::v1::*;
 use ffi;
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use std::ptr;
 
 use cvt;

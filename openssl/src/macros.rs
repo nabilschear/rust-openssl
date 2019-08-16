@@ -59,12 +59,12 @@ macro_rules! private_key_to_pem {
         ) -> Result<Vec<u8>, ::error::ErrorStack> {
             unsafe {
                 let bio = try!(::bio::MemBio::new());
-                assert!(passphrase.len() <= ::sgx_trts::libc::c_int::max_value() as usize);
+                assert!(passphrase.len() <= c_int::max_value() as usize);
                 try!(cvt($f(bio.as_ptr(),
                             self.as_ptr(),
                             cipher.as_ptr(),
                             passphrase.as_ptr() as *const _ as *mut _,
-                            passphrase.len() as ::sgx_trts::libc::c_int,
+                            passphrase.len() as c_int,
                             None,
                             ptr::null_mut())));
                 Ok(bio.get_buf().to_owned())
@@ -108,7 +108,7 @@ macro_rules! from_der {
         pub fn $n(der: &[u8]) -> Result<$t, ::error::ErrorStack> {
             unsafe {
                 ::ffi::init();
-                let len = ::std::cmp::min(der.len(), ::sgx_trts::libc::c_long::max_value() as usize) as ::sgx_trts::libc::c_long;
+                let len = ::std::cmp::min(der.len(), c_long::max_value() as usize) as c_long;
                 ::cvt_p($f(::std::ptr::null_mut(), &mut der.as_ptr(), len))
                     .map(|p| ::foreign_types::ForeignType::from_ptr(p))
             }

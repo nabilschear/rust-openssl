@@ -1,5 +1,9 @@
 use std::prelude::v1::*;
-use sgx_trts::libc::{c_char, c_int, c_void};
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
+
 use std::any::Any;
 use std::panic::{self, AssertUnwindSafe};
 use std::slice;

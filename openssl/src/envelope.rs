@@ -30,7 +30,10 @@ use std::prelude::v1::*;
 use error::ErrorStack;
 use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef};
-use sgx_trts::libc::c_int;
+#[cfg(feature = "sgx")]
+use sgx_trts::libc::*;
+#[cfg(not(feature = "sgx"))]
+use libc::*;
 use pkey::{HasPrivate, HasPublic, PKey, PKeyRef};
 use std::cmp;
 use std::ptr;
