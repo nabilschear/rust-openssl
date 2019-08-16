@@ -14,7 +14,7 @@ build = "build/main.rs"
 [features]
 vendored = ['openssl-src']
 # sgx features
-default = []
+default = ["nosgx"]
 nosgx = ["libc"]
 sgx = ["sgx_tstd", "sgx_trts"]
 

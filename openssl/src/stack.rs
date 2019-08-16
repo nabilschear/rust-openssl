@@ -1,5 +1,5 @@
 use std::prelude::v1::*;
-//use ffi;
+use ffi;
 use foreign_types::{ForeignType, ForeignTypeRef, Opaque};
 #[cfg(feature = "sgx")]
 use sgx_trts::libc::*;
