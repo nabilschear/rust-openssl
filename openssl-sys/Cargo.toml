@@ -12,7 +12,7 @@ links = "openssl"
 build = "build/main.rs"
 
 [features]
-vendored = ['openssl-src']
+#vendored = ['openssl-src']
 # sgx features
 default = ["nosgx"]
 nosgx = ["libc"]

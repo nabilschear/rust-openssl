@@ -125,12 +125,6 @@ extern crate libc;
 #[cfg(not(feature = "sgx"))]
 use libc::*;
 
-#[cfg(feature = "sgx")]
-extern crate openssl_sgx as openssl;
-
-#[cfg(not(feature = "sgx"))]
-extern create openssl_vendored as openssl;
-
 #[macro_use]
 extern crate bitflags;
 #[macro_use]
