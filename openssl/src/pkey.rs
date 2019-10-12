@@ -93,6 +93,11 @@ impl Id {
     pub const DSA: Id = Id(ffi::EVP_PKEY_DSA);
     pub const DH: Id = Id(ffi::EVP_PKEY_DH);
     pub const EC: Id = Id(ffi::EVP_PKEY_EC);
+
+    #[cfg(ossl111)]
+    pub const ED25519: Id = Id(ffi::EVP_PKEY_ED25519);
+    #[cfg(ossl111)]
+    pub const ED448: Id = Id(ffi::EVP_PKEY_ED448);
 }
 
 /// A trait indicating that a key has parameters.
@@ -122,6 +127,17 @@ generic_foreign_type_and_impl_send_sync! {
     pub struct PKey<T>;
     /// Reference to `PKey`.
     pub struct PKeyRef<T>;
+}
+
+impl<T> ToOwned for PKeyRef<T> {
+    type Owned = PKey<T>;
+
+    fn to_owned(&self) -> PKey<T> {
+        unsafe {
+            EVP_PKEY_up_ref(self.as_ptr());
+            PKey::from_ptr(self.as_ptr())
+        }
+    }
 }
 
 impl<T> PKeyRef<T> {
@@ -267,6 +283,12 @@ where
         /// [`i2d_PrivateKey`]: https://www.openssl.org/docs/man1.0.2/crypto/i2d_PrivateKey.html
         private_key_to_der,
         ffi::i2d_PrivateKey
+    }
+}
+
+impl<T> Clone for PKey<T> {
+    fn clone(&self) -> PKey<T> {
+        PKeyRef::to_owned(self)
     }
 }
 
@@ -429,6 +451,40 @@ impl PKey<Private> {
         }
     }
 
+    #[cfg(ossl110)]
+    fn generate_eddsa(nid: c_int) -> Result<PKey<Private>, ErrorStack> {
+        unsafe {
+            let kctx = cvt_p(ffi::EVP_PKEY_CTX_new_id(nid, ptr::null_mut()))?;
+            let ret = cvt(ffi::EVP_PKEY_keygen_init(kctx));
+            if let Err(e) = ret {
+                ffi::EVP_PKEY_CTX_free(kctx);
+                return Err(e);
+            }
+            let mut key = ptr::null_mut();
+            let ret = cvt(ffi::EVP_PKEY_keygen(kctx, &mut key));
+
+            ffi::EVP_PKEY_CTX_free(kctx);
+
+            if let Err(e) = ret {
+                return Err(e);
+            }
+
+            Ok(PKey::from_ptr(key))
+        }
+    }
+
+    /// Generates a new private Ed25519 key
+    #[cfg(ossl111)]
+    pub fn generate_ed25519() -> Result<PKey<Private>, ErrorStack> {
+        PKey::generate_eddsa(ffi::EVP_PKEY_ED25519)
+    }
+
+    /// Generates a new private Ed448 key
+    #[cfg(ossl111)]
+    pub fn generate_ed448() -> Result<PKey<Private>, ErrorStack> {
+        PKey::generate_eddsa(ffi::EVP_PKEY_ED448)
+    }
+
     private_key_from_pem! {
         /// Deserializes a private key from a PEM-encoded key type specific format.
         ///
@@ -545,6 +601,22 @@ impl PKey<Public> {
         public_key_from_der,
         PKey<Public>,
         ffi::d2i_PUBKEY
+    }
+}
+
+cfg_if! {
+    if #[cfg(any(ossl110, libressl270))] {
+        use ffi::EVP_PKEY_up_ref;
+    } else {
+        unsafe extern "C" fn EVP_PKEY_up_ref(pkey: *mut ffi::EVP_PKEY) {
+            ffi::CRYPTO_add_lock(
+                &mut (*pkey).references,
+                1,
+                ffi::CRYPTO_LOCK_EVP_PKEY,
+                "pkey.rs\0".as_ptr() as *const _,
+                line!() as c_int,
+            );
+        }
     }
 }
 

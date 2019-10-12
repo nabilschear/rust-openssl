@@ -1,6 +1,6 @@
 [package]
 name = "openssl"
-version = "0.10.24"
+version = "0.10.25"
 authors = ["Steven Fackler <sfackler@gmail.com>"]
 license = "Apache-2.0"
 description = "OpenSSL bindings"
@@ -28,7 +28,7 @@ foreign-types = "0.3.1"
 lazy_static = {  version = "1", features = ["spin_no_std"] }
 libc = { version="0.2", optional=true }
 
-openssl-sys = { version = "0.9.49", path = "../openssl-sys", default-features = false }
+openssl-sys = { version = "0.9.50", path = "../openssl-sys", default-features = false }
 
 sgx_tstd = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_tstd", optional=true }
 sgx_trts = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_trts", optional=true }

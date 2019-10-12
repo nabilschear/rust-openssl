@@ -202,6 +202,7 @@ See rust-openssl README for more information:
             (2, 9, 0) => ('2', '9', '0'),
             (2, 9, _) => ('2', '9', 'x'),
             (3, 0, 0) => ('3', '0', '0'),
+            (3, 0, 1) => ('3', '0', '1'),
             _ => version_error(),
         };
 
@@ -242,7 +243,7 @@ fn version_error() -> ! {
         "
 
 This crate is only compatible with OpenSSL 1.0.1 through 1.1.1, or LibreSSL 2.5
-through 2.9.x, but a different version of OpenSSL was found. The build is now aborting
+through 3.0.1, but a different version of OpenSSL was found. The build is now aborting
 due to this version mismatch.
 
 "
@@ -258,7 +259,7 @@ fn parse_version(version: &str) -> u64 {
 
     // and the type specifier suffix
     let version = version.trim_right_matches(|c: char| match c {
-        '0'...'9' | 'a'...'f' | 'A'...'F' => false,
+        '0'..='9' | 'a'..='f' | 'A'..='F' => false,
         _ => true,
     });
 
