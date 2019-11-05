@@ -30,8 +30,8 @@ libc = { version="0.2", optional=true }
 
 openssl-sys = { version = "0.9.50", path = "../openssl-sys", default-features = false }
 
-sgx_tstd = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_tstd", optional=true }
-sgx_trts = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", package="sgx_trts", optional=true }
+sgx_tstd = { rev = "v1.0.9", git = "https://github.com/apache/mesatee-sgx.git", package="sgx_tstd", optional=true }
+sgx_trts = { rev = "v1.0.9", git = "https://github.com/apache/mesatee-sgx.git", package="sgx_trts", optional=true }
 
 [dev-dependencies]
 tempdir = "0.3"
